@@ -1,14 +1,19 @@
-import express, { Express, Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import router from './src/routes/router';
 
 dotenv.config();
 
-const app: Express = express();
-const port = process.env.PORT;
+const app = express();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', router);
+
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
