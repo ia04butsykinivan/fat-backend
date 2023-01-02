@@ -11,9 +11,71 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id Int @id @default(autoincrement())
+
+  username String @unique
+  password String
+
+  connections Connection[]
+  automations Automation[]
+}
+
+model Connection {
+  id Int @id @default(autoincrement())
+
+  chatId Int?
+
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Service {
+  id Int @id @default(autoincrement())
+
+  key  String @unique
+  name String
+
+  connections Connection[]
+  triggers    Trigger[]
+  actions     Action[]
+}
+
+model Trigger {
+  id Int @id @default(autoincrement())
+
+  key  String @unique
+  name String
+
+  automations Automation[]
+
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id])
+}
+
+model Action {
+  id Int @id @default(autoincrement())
+
+  key  String @unique
+  name String
+
+  automations Automation[]
+
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id])
+}
+
+model Automation {
+  id Int @id @default(autoincrement())
+
+  triggerId Int
+  trigger   Trigger @relation(fields: [triggerId], references: [id])
+
+  actionId Int
+  action   Action @relation(fields: [actionId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
