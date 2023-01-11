@@ -12,7 +12,7 @@ export const signUp = async (req, res) => {
   });
 
   const token = createJWT(user);
-  
+
   res.json({ token });
 };
 

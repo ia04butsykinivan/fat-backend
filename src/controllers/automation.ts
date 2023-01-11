@@ -2,6 +2,20 @@ import prisma from '../services/db';
 import { ACTIONS } from '../utils/constants';
 import { telegramNewMessage } from '../services/telegram';
 
+export const getAutomations = async (req, res) => {
+  const automations = await prisma.automation.findMany({
+    where: {
+      userId: req.user.id,
+    },
+    include: {
+      trigger: true,
+      action: true,
+    }
+  });
+
+  res.json(automations);
+};
+
 export const createAutomation = async (req, res) => {
   const automation = await prisma.automation.create({
     data: {

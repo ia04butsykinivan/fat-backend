@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { createAutomation, triggerAutomation } from '../controllers/automation';
+import { getAutomations, createAutomation, triggerAutomation } from '../controllers/automation';
 import { body } from 'express-validator';
 import { handleValidationErrors } from '../middlewares/validation';
 
 const automationRouter = Router();
 
+automationRouter.get('/automation', getAutomations);
 automationRouter.post(
   '/automation',
   body('triggerId').isInt(),
